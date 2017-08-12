@@ -14,7 +14,7 @@ categories = {
     'Au': 'Audio',
     'Bm': 'Business & Marketing',
     'Cm': 'Community Management',
-    'De': 'Desing',
+    'De': 'Design',
     'Es': 'eSports',
     'Ed': 'Game Career - Education',
     'Gn': 'Game Narrative',
@@ -36,6 +36,8 @@ gdc_url_all = 'http://www.gdcvault.com/browse/gdc-17'
 
 gdc_url = gdc_url_all
 
+year_folder = "2017/"
+
 ds_url = 'http://s3-2u.digitallyspeaking.com/'
 xml_url = 'http://evt.dispeak.com/ubm/gdc/sf17/xml/'
 
@@ -52,6 +54,8 @@ pdf_regexp = r"<iframe.*player.html.xml=(.*).xml"
 
 username = ""
 password = ""
+
+logFileName = "log.txt"
 
 savedCookies = None
 
@@ -84,6 +88,10 @@ def download_file(url, name, folder):
     if os.path.exists(local_filename):
         message(local_filename + " already exists, skipping")
         return
+
+    #lets put it in log so if it failed we at least knew what was a last file
+    with open(logFileName, "+a") as file:
+        file.write("\n" + local_filename)
 
     with open(local_filename, 'wb') as f:
         for data in tqdm(r.iter_content(chunk_size=1024), desc=local_filename, leave=True, total=(file_size / 1024),
@@ -219,7 +227,7 @@ def _main():
                     print("-------------------------------------------------------------------")
                     print("Dowloading " + file_name)
                     print("-------------------------------------------------------------------")
-                    download_file(video_url, file_name + '.mp4', '2017/' + categories[category])
+                    download_file(video_url, file_name + '.mp4', year_folder + categories[category])
     except Exception as inst:
         print('Exception!')
         print(type(inst))
