@@ -1,12 +1,8 @@
-from __future__ import print_function
-from urllib import request, error, parse
-
 import requests
 import os
 import re
 import sys
 from tqdm import tqdm
-from urllib.request import urlopen
 
 categories = {
     'Ai': 'AI',
@@ -104,19 +100,13 @@ def download_file(url, name, folder):
 
 def download_url(url):
     try:
-        if savedCookies is None:
-            response = urlopen(url)
-        else:
-            response = requests.get(url, cookies=savedCookies)
+        response = requests.get(url, cookies=savedCookies)
     except HTTPError as e:
         error("http error: " + "\"" + str(e) + "\"")
     except URLError as e:
         error("url error (make sure you're online): " + "\"" + str(e) + "\"")
 
-    if savedCookies is None:
-        return response.read().decode('utf-8')
-    else:
-        return response.text
+    return response.text
 
 
 def get_video_list_urls(catUrl):
